@@ -150,3 +150,10 @@ model Transaction {
   @@index([organizationId, date])
 }
 
+// Better Auth JWT Plugin - JWKS (JSON Web Key Set) storage
+model Jwks {
+  id         String   @id @default(cuid())
+  publicKey  String   @db.Text
+  privateKey String   @db.Text
+  createdAt  DateTime @default(now())
+}

@@ -26,7 +26,14 @@ app.get('/health', (c) => {
 });
 
 // Better Auth Handler - handles all /api/auth/* routes per official docs
-app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw));
+app.on(['POST', 'GET'], '/api/auth/*', async (c) => {
+  try {
+    return await auth.handler(c.req.raw);
+  } catch (error) {
+    console.error('Auth handler error:', error);
+    return c.json({ error: 'Authentication service error', details: String(error) }, 500);
+  }
+});
 
 // API Routes
 app.route('/api/transactions', transactionRoutes);

@@ -25,9 +25,31 @@ export const auth = betterAuth({
   },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
+  // Trusted origins for cross-origin cookie sharing
+  trustedOrigins: [
+    'http://localhost:3001',
+    process.env.FRONTEND_URL || 'http://localhost:3001',
+  ],
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days in seconds
     updateAge: 60 * 60 * 24, // Update session every 24 hours
+  },
+  // Rate limiting to prevent abuse
+  rateLimit: {
+    enabled: true,
+    window: 60, // 60 seconds window
+    max: 100, // Max 100 requests per window per IP
+    // Custom rate limits for specific endpoints
+    customRules: {
+      '/api/auth/sign-in/*': {
+        window: 60,
+        max: 10, // More restrictive for login attempts
+      },
+      '/api/auth/sign-up/*': {
+        window: 60,
+        max: 5, // Even more restrictive for registration
+      },
+    },
   },
   // Auto-create personal organization on user signup
   databaseHooks: {

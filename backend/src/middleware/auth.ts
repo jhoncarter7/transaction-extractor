@@ -50,6 +50,12 @@ export async function authMiddleware(c: Context, next: Next): Promise<Response |
       email: session.user.email,
     };
 
+    // Set PostgreSQL session variable for Row-Level Security (RLS)
+    // This enables database-level data isolation as defense-in-depth
+    await prisma.$executeRawUnsafe(
+      `SET app.current_organization_id = '${userWithOrg.organizationId}'`
+    );
+
     return await next();
   } catch (error) {
     console.error('Auth middleware error:', error);
