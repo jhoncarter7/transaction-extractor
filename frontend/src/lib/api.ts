@@ -1,4 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000'
+// Use empty string in browser to go through Next.js proxy (same-origin, cookies work)
+// Only use direct backend URL on server-side if needed
+const API_BASE_URL = typeof window !== 'undefined'
+    ? '' // Empty = same origin, goes through Next.js rewrites proxy
+    : (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000')
 
 export interface Transaction {
     id: string
