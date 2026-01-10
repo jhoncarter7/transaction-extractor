@@ -26,25 +26,11 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
   // Trusted origins for cross-origin cookie sharing
+  // Trusted origins
   trustedOrigins: [
     'http://localhost:3001',
     process.env.FRONTEND_URL || 'http://localhost:3001',
   ],
-  // Advanced cookie configuration for cross-origin deployment
-  advanced: {
-    crossSubDomainCookies: {
-      enabled: true,
-    },
-    defaultCookieAttributes: {
-      // For cross-origin (frontend on Vercel, backend on different domain):
-      // - SameSite must be 'none' to allow cross-origin cookie sharing
-      // - Secure must be true (required for SameSite=none)
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      path: '/',
-    },
-  },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days in seconds
     updateAge: 60 * 60 * 24, // Update session every 24 hours
