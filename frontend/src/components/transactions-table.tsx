@@ -78,7 +78,7 @@ export function TransactionsTable({ refreshTrigger }: TransactionsTableProps) {
     }
 
     const getConfidenceBadge = (confidence: number) => {
-        const percentage = Math.round(confidence * 100)
+        const percentage = Math.round(confidence)
         let colorClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
 
         if (percentage < 70) {
