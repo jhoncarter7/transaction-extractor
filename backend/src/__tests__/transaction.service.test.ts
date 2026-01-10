@@ -1,6 +1,8 @@
 import { prisma } from '../config/database';
 import { TransactionService } from '../services/transaction.service';
-import { AuthenticatedContext } from '../types';
+import { AuthenticatedContext, GetTransactionsResponse } from '../types';
+
+type TransactionItem = GetTransactionsResponse['transactions'][number];
 
 describe('Transaction Service', () => {
   let user1Context: AuthenticatedContext;
@@ -113,10 +115,10 @@ Amount: -75.00`;
       const result = await TransactionService.getTransactions({}, user1Context);
 
       expect(result.transactions.length).toBeGreaterThan(0);
-      expect(result.transactions.every((txn) =>
+      expect(result.transactions.every((txn: TransactionItem) =>
         txn.description === 'User 1 Transaction' || txn.description.includes('TEST')
       )).toBe(true);
-      expect(result.transactions.some((txn) =>
+      expect(result.transactions.some((txn: TransactionItem) =>
         txn.description === 'User 2 Transaction'
       )).toBe(false);
     });
@@ -150,9 +152,9 @@ Amount: -75.00`;
 
         expect(page2.transactions.length).toBeGreaterThan(0);
         // Verify no overlap between pages
-        const page1Ids = page1.transactions.map((t) => t.id);
-        const page2Ids = page2.transactions.map((t) => t.id);
-        const hasOverlap = page1Ids.some((id) => page2Ids.includes(id));
+        const page1Ids = page1.transactions.map((t: TransactionItem) => t.id);
+        const page2Ids = page2.transactions.map((t: TransactionItem) => t.id);
+        const hasOverlap = page1Ids.some((id: string) => page2Ids.includes(id));
         expect(hasOverlap).toBe(false);
       }
     });
@@ -173,7 +175,7 @@ Amount: -200.00`;
 
       // User 1 should not see User 2's transaction
       expect(
-        user1Transactions.transactions.some((txn) => txn.id === secretTransactionId)
+        user1Transactions.transactions.some((txn: TransactionItem) => txn.id === secretTransactionId)
       ).toBe(false);
 
       // Verify transaction exists but belongs to user2
