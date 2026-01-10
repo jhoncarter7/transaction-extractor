@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -51,10 +51,14 @@ interface AuthFormProps {
 
 export function AuthForm({ mode }: AuthFormProps) {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [isLoading, setIsLoading] = useState(false)
 
     const isLogin = mode === 'login'
     const schema = isLogin ? loginSchema : registerSchema
+
+    // Get the callback URL from search params, default to '/'
+    const callbackUrl = searchParams.get('callbackUrl') || '/'
 
     const form = useForm<LoginFormValues | RegisterFormValues>({
         resolver: zodResolver(schema),
@@ -80,7 +84,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                 }
 
                 toast.success('Welcome back!')
-                router.push('/')
+                router.push(callbackUrl)
                 router.refresh()
             } else {
                 const { name, email, password } = values as RegisterFormValues
@@ -96,7 +100,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                 }
 
                 toast.success('Account created successfully!')
-                router.push('/')
+                router.push(callbackUrl)
                 router.refresh()
             }
         } catch (error) {
