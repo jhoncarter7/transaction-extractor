@@ -4,8 +4,15 @@
         "types": [
             "node"
         ],
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "rootDir": ".",
+        "declaration": false,
+        "declarationMap": false
     },
+    "include": [
+        "src/**/*",
+        "prisma/generated/**/*"
+    ],
     "exclude": [
         "node_modules",
         "dist",

@@ -1,4 +1,4 @@
-import { Transaction } from '@prisma/client';
+import { Transaction } from '../generated/prisma/client';
 import { prisma } from '../config/database';
 import { TransactionParserService } from './transaction-parser.service';
 import { ParsedTransaction, GetTransactionsQuery } from '../types';
