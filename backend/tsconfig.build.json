@@ -10,8 +10,7 @@
         "declarationMap": false
     },
     "include": [
-        "src/**/*",
-        "prisma/generated/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "node_modules",
