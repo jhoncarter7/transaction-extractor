@@ -5,7 +5,7 @@
             "node"
         ],
         "skipLibCheck": true,
-        "rootDir": ".",
+        "rootDir": "./src",
         "declaration": false,
         "declarationMap": false
     },
